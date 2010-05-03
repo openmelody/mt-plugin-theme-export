@@ -106,7 +106,9 @@ sub write {
             $header .= $key . ': ' . "'$v'\n";
         }
         my $str = $self->{'yaml'}->write_string() or die $self->{'yaml'}->errstr;
+        $str =~ s{^---}{};
         open FILE, ">$filepath" or die "Could not open $filepath for openning";
+        print FILE '---';
         print FILE $header;
         print FILE $str;
         close FILE;
