@@ -1,7 +1,7 @@
 id: ThemeExport
 name: 'Theme Exporter'
 description: "A plugin that provides a simple user interface for exporting a blog's templates into an easily distributable theme."
-version: 0.1
+version: 0.2
 
 applications:
   cms:
