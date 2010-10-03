@@ -13,6 +13,7 @@ lib directory.
 
 * Movable Type 4.x
 * The perl module Archive::Zip installed
+* Config Assistant 
 
 # Installation
 
