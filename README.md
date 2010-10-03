@@ -3,7 +3,7 @@
 This plugin provides the ability to export a blog's templates as a theme. 
 Users can export a blog's templates in one of two ways:
 
-* via the command line using the export-ts tool 
+* via the command line using the export-theme tool 
 * via the MT administrative web interface
 
 It should also be mentioned that this plugin also provides a simple API
@@ -43,14 +43,14 @@ you will see a link called "Export Theme." Click this to spawn a dialog and
 export a blog's templates as a theme. Then fill in the details in the dialog
 that appears and when you are finished, click the Download link.
 
-### `export-ts` Command Line Tool ###
+### `export-theme` Command Line Tool ###
 
 A tool to export a blog's templates as a template set.
 
 #### Basic Usage ####
 
     cd /PATH/TO/MT/
-    MT_HOME=`pwd` perl ./tools/export-ts --blog=1 --id="MyTemplateSet"
+    MT_HOME=`pwd` perl ./tools/export-theme --blog=1 --id="MyTemplateSet"
 
 #### Options ####
 
@@ -87,8 +87,8 @@ The following options are available:
 From the command line, one would type:
 
     cd /PATH/TO/MT/
-    chmod a+x tools/export-ts
-    MT_HOME=`pwd` perl ./tools/export-ts --blog=1 --id=MySet \
+    chmod a+x tools/export-theme
+    MT_HOME=`pwd` perl ./tools/export-theme --blog=1 --id=MySet \
                 --name="My Template Set" --version=3 --out="template-sets"
 
 This would result in the following directories being created:
