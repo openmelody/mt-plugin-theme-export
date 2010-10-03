@@ -20,6 +20,16 @@ To install this plugin follow the instructions found here:
 
 [http://tinyurl.com/easy-plugin-install](The Ultimate Guide to Installing Movable Type Plugins)
 
+One important note is that this plugin should be installed into Movable Type's 
+`addons` directory. Installing this plugin into any other directory might produce 
+critical (but non-damaging) errors. So please be careful. 
+
+**Upgrading? Take Note**
+
+Also be aware that if you are upgrading from a previous version, you should 
+remove any copy of Config Assistant from your plugins directory if one is 
+installed there.
+
 # Usage
 
 ## Web Interface

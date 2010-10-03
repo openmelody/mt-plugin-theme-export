@@ -1,11 +1,11 @@
 <mt:setvarblock name="page_title"><__trans phrase="Export Theme"></mt:setvarblock>
 <mt:setvarblock name="screen_id">theme-export</mt:setvarblock>
 <mt:setvarblock name="html_head" append="1">
-  <link rel="stylesheet" href="<mt:var name="static_uri">plugins/ThemeExport/app.css" type="text/css" />
+  <link rel="stylesheet" href="<$mt:PluginStaticWebPath component="themeexport"$>app.css" type="text/css" />
   <script type="text/javascript" src="<mt:var name="static_uri">jquery/jquery.js"></script>
-  <script type="text/javascript" src="<mt:var name="static_uri">plugins/ThemeExport/app.js"></script>
+  <script type="text/javascript" src="<$mt:PluginStaticWebPath component="themeexport"$>app.js"></script>
   <script type="text/javascript" src="<mt:var name="static_uri">js/dialog.js"></script>
-  <script type="text/javascript" src="<mt:var name="static_uri">plugins/ThemeExport/jquery.scrollTo-1.4.2-min.js"></script>
+  <script type="text/javascript" src="<$mt:PluginStaticWebPath component="themeexport"$>jquery.scrollTo-1.4.2-min.js"></script>
 
   <script type="text/javascript">
   $(document).ready( function() {
