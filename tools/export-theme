@@ -24,7 +24,7 @@ sub usage {
 
 sub help {
     return qq{
-        export-ts - A tool to export a blog's templates as a template set
+        export-theme - A tool to export a blog's templates as a template set
 
         --blog      A list of blog IDs (separated by a comma) to export templates
                     from. (optional)
@@ -199,7 +199,7 @@ __END__
 
 =head1 NAME
 
-export-ts - A tool to export a blog's templates as a template set
+export-theme - A tool to export a blog's templates as a template set
 
 =head1 SYNOPSIS
 
@@ -212,7 +212,7 @@ Place this script inside your Movable Type "tools" directory.
 
 =head1 DESCRIPTION
 
-I<export-ts> is a tool to export a blog's templates to a
+I<export-theme> is a tool to export a blog's templates to a
 template set that can easily be install elsewhere.
 
 =head1 OPTIONS
@@ -229,8 +229,8 @@ The following options are available:
 
 From the command line, one would type:
 
-    prompt> chmod a+x export-ts
-    prompt> MT_HOME=/path/to/mt export-ts --blog=<id> \
+    prompt> chmod a+x export-theme
+    prompt> MT_HOME=/path/to/mt export-theme --blog=<id> \
             --key=MySet --name="My Template Set"
 
 This would result in the following directories being created:
