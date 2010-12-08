@@ -8,6 +8,7 @@ use File::Copy::Recursive qw(dircopy);
 use File::Path;
 use File::Spec;
 use MT;
+use MT::PublishOption;
 use MT::FileMgr;
 use MT::Util qw( dirify );
 use YAML::Tiny;
@@ -384,13 +385,25 @@ sub _process_templates {
 
         # Write the template text out to a file within the plugin envelope
         if ( $self->_write_tmpl( $t, $ts_id, $args->{type}, $basename ) ) {
-
+            print "Wrote template " . $t->name . " (".$t->type.",build=".$t->build_type.")\n";
             # Using the template in context, compile the YAML config
             my $cfg = {
                 label => $t->name,
-                filename =>
-                  File::Spec->catfile( $args->{type}, $basename . '.mtml' )
+                filename => File::Spec->catfile( $args->{type}, $basename . '.mtml' ),
+                ($t->type eq 'index' && $t->build_type != MT::PublishOption::ONDEMAND()) ? ( build_type => $t->build_type ) : (),
             };
+            use Data::Dumper;
+#            print Dumper($cfg);
+            if ($t->type =~ /^(module|widget|custom)$/) {
+                $cfg->{'include_with_ssi'} = 1 if ($t->include_with_ssi);
+                foreach (qw( expire_type expire_event expire_interval )) {
+                    my $var = 'cache_'.$_;
+                    if (my $val = $t->$var()) {
+                        $cfg->{cache}->{$_} = $val;
+                        $cfg->{cache}->{$_} *= 60 if ($_ eq 'expire_interval');
+                    }
+                }
+            }
 
             # The "config" attribute can be either a code or hash reference
             if ( 'CODE' eq ref( $args->{config} ) ) {
@@ -431,6 +444,7 @@ sub _templatemap_config {
         $mappings->{$type} = {
             archive_type => $map->archive_type,
             preferred    => $map->is_preferred,
+            $map->build_type != MT::PublishOption::ONDEMAND() ? (build_type => $map->build_type) : (),
             $map->file_template
               && $map->file_template ne '~' && $map->file_template ne ''
             ? ( file_template => $map->file_template )

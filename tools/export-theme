@@ -13,7 +13,7 @@ use strict;
 use warnings;
 use Carp;
 
-use lib qw( lib extlib plugins/ThemeExport/lib );
+use lib qw( lib extlib addons/ThemeExport.plugin/lib );
 use base qw( MT::Tool );
 use MT::Theme::Util qw( find_theme_plugin );
 
