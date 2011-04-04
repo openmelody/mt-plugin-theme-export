@@ -6,6 +6,16 @@ Users can export a blog's templates in one of two ways:
 * via the command line using the export-theme tool 
 * via the MT administrative web interface
 
+Theme Exporter is great to kick-start theme development based on an existing
+blog: it saves you the mundane effort of copy and pasting templates into text
+files and starts a `config.yaml` for you. However, note that the exported
+results likely need some additional love: you may want to take advantage of
+features from [Config
+Assistant](https://github.com/openmelody/mt-plugin-configassistant) like Theme
+Options or static content deployment, or features of [Theme
+Manager](https://github.com/openmelody/mt-plugin-theme-manager) like the
+ability to supply documentation and preview images.
+
 It should also be mentioned that this plugin also provides a simple API
 for managing and configuring your own theme export if you so wish. Consult
 the POD documentation for MT::Theme::Exporter, found in this plugin's 
