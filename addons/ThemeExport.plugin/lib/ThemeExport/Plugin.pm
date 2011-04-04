@@ -7,7 +7,7 @@ use MT::Util qw( format_ts epoch2ts caturl );
 
 sub export {
     my $app  = shift;
-    my $q    = $app->{query};
+    my $q    = $app->query;
     my $blog = $app->blog;
 
     $| = 1;
@@ -42,7 +42,7 @@ sub export {
 
     my ( $support_dir, $target_path, $target_url );
     $support_dir =
-      File::Spec->catdir( 'support', 'theme-export', $blog->id,
+      File::Spec->catdir( 'support', 'theme-export', 'blog_id_'.$blog->id,
         format_ts( "%Y-%m-%d", epoch2ts( undef, time ) ) );
     $target_path = File::Spec->catdir( $app->static_file_path, $support_dir );
     unless ( $fmgr->exists($target_path) ) {
@@ -53,7 +53,14 @@ sub export {
     $target_path = File::Spec->catfile( $target_path, $zipfilename );
     $target_url = caturl( $app->static_path, $support_dir, $zipfilename );
 
-    move( $exporter->{'zipfilepath'}, $target_path );
+    $fmgr->rename( $exporter->{'zipfilepath'}, $target_path )
+        or die $app->print(
+            'JSON:'
+              . MT::Util::to_json( {
+                    'error' => "The destination $target_path could not be written. Check permissions before retrying.",
+                }
+              )
+        );;
 
     File::Path::rmtree($basedir);
 
@@ -69,7 +76,7 @@ sub export {
 
 sub export_start {
     my $app  = shift;
-    my $q    = $app->{query};
+    my $q    = $app->query;
     my $blog = $app->blog;
     my $tmpl = $app->load_tmpl('dialog_export.tmpl');
     $tmpl->param( blog_id    => $blog->id );

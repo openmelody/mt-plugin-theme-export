@@ -13,17 +13,18 @@ lib directory.
 
 ## Prerequisites ##
 
-* Movable Type 4.x
+* Movable Type 4.x or Melody 1.x
 * The [Archive::Zip](http://search.cpan.org/dist/Archive-Zip) perl module
-* Config Assistant 
+* [Config Assistant](https://github.com/openmelody/mt-plugin-configassistant) (core to Melody)
+* [Melody Compatibility Layer](https://github.com/endevver/mt-plugin-melody-compat) (not needed for Melody)
 
 ## Installation ##
 
 The installation is the same as the standard for most MT plugins. If you need help, please see [The Ultimate Guide to Installing Movable Type Plugins](http://tinyurl.com/easy-plugin-install)
 
 One important note is that this plugin should be installed into Movable Type's 
-`addons` directory. Installing this plugin into any other directory might produce 
-critical (but non-damaging) errors. So please be careful. 
+`addons` directory. Installing this plugin into any other directory might 
+produce critical (but non-damaging) errors. So please be careful. 
 
 **Upgrading? Take Note**
 
@@ -31,17 +32,14 @@ Also be aware that if you are upgrading from a previous version, you should
 remove any copy of Config Assistant from your plugins directory if one is 
 installed there.
 
-# Usage
-=======
 ## Usage ##
->>>>>>> dd079226632150d0d50182a1ebcd4830f09ecf71
 
 ### Web Interface ###
 
-From the Design menu select "Templates." In the sidebar under "Page Actions"
-you will see a link called "Export Theme." Click this to spawn a dialog and
-export a blog's templates as a theme. Then fill in the details in the dialog
-that appears and when you are finished, click the Download link.
+* Melody: go to the Design menu and select Theme Dashboard, then select  Customization. Click the "Export Theme" link.
+* Movable Type: go to the Design menu and select Templates. In the sidebar under "Page Actions" click the "Export Theme" link.
+
+A pop-up dialog will appear. Fill in the General Information and Designer Details that, then click Export. When finished, click the download link.
 
 ### `export-theme` Command Line Tool ###
 
