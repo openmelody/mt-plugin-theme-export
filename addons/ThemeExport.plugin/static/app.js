@@ -27,17 +27,16 @@ function interactive_export( c ) {
     text = text.replace(/\r?\n$/, '');
     
     var lines = text.split(/\r?\n/);
-    var last_line;
     for (var i = 0; i < lines.length; i++) {
         var line = lines[i];
         var h = $('#export-log ul').append('<li>' + line + '</li>').height();
-        $('#export-log').scrollTo( 'max' , { 'axis' : 'y' });
+        $('#export-log').scrollTo( 'max' , { 'axis' : 'y' } );
     }
-    if (last_line) {
-        alert("Last line: " + last_line);
-        //current_task.innerHTML = last_line;
-    }
-   
+    
+    // After the log is finished, show the result. This shouldn't display
+    // until after scrollTo is done in the for loop above, but it appears
+    // early. Is there a scrollTo option to make it not continue until done?
+    $('#export-pane .progress').show();
 }
 $(document).ready( function() {
     $('#steps li').click( function() {

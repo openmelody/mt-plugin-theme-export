@@ -27,6 +27,7 @@ lib directory.
 * The [Archive::Zip](http://search.cpan.org/dist/Archive-Zip) perl module
 * [Config Assistant](https://github.com/openmelody/mt-plugin-configassistant) (core to Melody)
 * [Melody Compatibility Layer](https://github.com/endevver/mt-plugin-melody-compat) (not needed for Melody)
+* [Theme Manager](https://github.com/openmelody/mt-plugin-theme-manager) (not needed for Melody)
 
 ## Installation ##
 
@@ -46,8 +47,7 @@ installed there.
 
 ### Web Interface ###
 
-* Melody: go to the Design menu and select Theme Dashboard, then select  Customization. Click the "Export Theme" link.
-* Movable Type: go to the Design menu and select Templates. In the sidebar under "Page Actions" click the "Export Theme" link.
+Go to the Design menu and select Theme Dashboard, then select Customization. Click the "Export Theme" link.
 
 A pop-up dialog will appear. Fill in the General Information and Designer Details that, then click Export. When finished, click the download link.
 

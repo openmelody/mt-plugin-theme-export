@@ -29,46 +29,35 @@
             success: function(text, textStatus, XMLHttpRequest) {
                 var matches = text.split(/JSON:/);
                 if (matches && matches.length) {
-                    
-                    // Add the status message to the export log area.
-                    text = matches[0].replace(/\r?\n$/, '');
-                    var lines = text.split(/\r?\n/);
-                    var last_line;
-                    for (var i = 0; i < lines.length; i++) {
-                        var line = lines[i];
-                        var h = $('#export-log ul').append('<li>' + line + '</li>').height();
-                        $('#export-log').scrollTo( 'max' , { 'axis' : 'y' });
-                    }
 
                     // Successfully exported!
                     var json = matches[1];
                     if (json) {
                         var data = eval( '(' + json + ')' );
-                        $('#export-pane .progress').fadeOut( function() {
-                            if (data.error) {
-                                $(this).html('<p>'+data.error+'</p>').fadeIn();
-                            }
-                            else {
-                                // Add the download button
-                                $(this).html('<a href="'+data.download_url+'" title="Download Theme">Download '+data.zipfilename+'</a>').fadeIn();
+                        if (data.error) {
+                            $('#export-pane .progress').html('<p>'+data.error+'</p>');
+                        }
+                        else {
+                            // Add the download button
+                            $('#export-pane .progress').html(
+                                '<a href="'+data.download_url+'" title="Download Theme">Download '+data.zipfilename+'</a>'
+                            );
 
-                                // Remove the export button, and change "Cancel" 
-                                // to "Close."
-                                $('button#continue').fadeOut();
-                                $('button#close').text('Close');
-                            }
-                        });
+                            // Remove the export button, and change "Cancel" 
+                            // to "Close."
+                            $('button#continue').hide();
+                            $('button#close').text('Close');
+                        }
                     }
                 }
 
             }
         });
-        // Doesn't seem to do anything.
+
         xhr.onreadystatechange = function() {
-          alert('test');
-          if ( xhr.readyState == 3 ) {
-            interactive_export( xhr );
-          }
+            if ( xhr.readyState == 3 ) {
+                interactive_export( xhr );
+            }
         };
 
     });
@@ -143,7 +132,7 @@
             <li>Exporting...</li>
         </ul>
       </div>
-      <div class="progress"></div>
+      <div class="progress" style="display: none;"></div>
     </div>
 
     <div class="actions-bar">
