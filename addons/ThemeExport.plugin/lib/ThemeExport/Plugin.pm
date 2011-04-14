@@ -60,7 +60,7 @@ sub export {
                     'error' => "The destination $target_path could not be written. Check permissions before retrying.",
                 }
               )
-        );;
+        );
 
     File::Path::rmtree($basedir);
 
