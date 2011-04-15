@@ -32,11 +32,6 @@ function interactive_export( c ) {
         var h = $('#export-log ul').append('<li>' + line + '</li>').height();
         $('#export-log').scrollTo( 'max' , { 'axis' : 'y' } );
     }
-    
-    // After the log is finished, show the result. This shouldn't display
-    // until after scrollTo is done in the for loop above, but it appears
-    // early. Is there a scrollTo option to make it not continue until done?
-    $('#export-pane .progress').show();
 }
 $(document).ready( function() {
     $('#steps li').click( function() {

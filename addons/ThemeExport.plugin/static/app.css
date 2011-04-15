@@ -41,6 +41,12 @@
 #steps li span,
 #steps li label { cursor: pointer; }
 
+input[type=text] {
+    border: 1px solid #ccc;
+    padding: 3px;
+    width: 600px;
+}
+
 #export-pane {
   display: none;
   float: none;
