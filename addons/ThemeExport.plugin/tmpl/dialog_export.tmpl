@@ -78,6 +78,15 @@
 <mt:include name="dialog/header.tmpl">
 
 <div id="export_theme_content">
+
+    <div id="msg-container">
+        <mtapp:statusmsg
+            id="message"
+            class="info">
+                This tool will take you through the process of exporting a theme. Your theme metadata (entered in the General Information and Designer Details tabs), your blog's templates, and a <code>config.yaml</code> file will be exported and zipped for you to download. Your existing site will be unaffected by this export. Learn more about themes in the <a href="https://github.com/openmelody/melody/wiki/designguide-theme" target="_blank">Theme Designer Guide</a>.
+        </mtapp:statusmsg>
+    </div>
+
   <form id="export-form" method="post" 
         action="<$mt:var name="script_url"$>">
 

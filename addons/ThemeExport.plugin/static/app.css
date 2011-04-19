@@ -1,3 +1,9 @@
+#export_theme_content {
+    height: 375px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
 .page {
   display: none;
 }
