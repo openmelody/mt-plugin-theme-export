@@ -79,6 +79,7 @@ sub new {
           key         => $self->{'key'},
           name        => $self->{'pack_name'},
           description => $self->{'pack_description'},
+          version     => $self->{'pack_version'},
           %opts
       };
 
@@ -111,7 +112,7 @@ sub write {
     $self->_debug("  - Writing config.yaml file $filepath");
     unless ( $self->_is_dryrun() ) {
         my $header = '';
-        foreach my $key (qw(id key name description)) {
+        foreach my $key (qw(id key name description version)) {
             my $v = delete $self->{'yaml'}->[0]->{$key};
             $v =~ s/'/\\'/g;
             $header .= $key . ': ' . "'$v'\n";
