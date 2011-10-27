@@ -664,7 +664,7 @@ sub _process_field_day_fields {
 
     # Grab all Field Day fields in this blog.
     my $iter = MT->model('fdsetting')
-      ->load_iter( { blog_id => $blog_id, }, { sort => 'name', } );
+      ->load_iter( { blog_id => $blog_id, }, { sort => 'order', } );
     if ($iter) {
         print "Exporting Field Day fields from blog #$blog_id";
     }
