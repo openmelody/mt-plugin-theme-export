@@ -627,7 +627,7 @@ sub _process_custom_fields {
     }
     while ( my $cf = $iter->() ) {
         $self->_debug(
-                 "\t- Writing Custom Field definition: " . $cf->name . "\n" );
+                 "\t- Writing Custom Field definition: " . $cf->name );
 
         # YAML::Tiny will convert a hash into the necessary structure to
         # write YAML, however we can't do that because of some naming
@@ -666,7 +666,7 @@ sub _process_field_day_fields {
     my $iter = MT->model('fdsetting')
       ->load_iter( { blog_id => $blog_id, }, { sort => 'name', } );
     if ($iter) {
-        print "Exporting Field Day fields from blog #$blog_id\n";
+        print "Exporting Field Day fields from blog #$blog_id";
     }
     while ( my $fd = $iter->() ) {
         $self->_write_field_day_yaml({
@@ -703,7 +703,7 @@ sub _write_field_day_yaml {
     my $blog_id = $arg_ref->{blog_id};
 
     $self->_debug(
-                 "\t- Writing Field Day definition: " . $fd->name . "\n" );
+                 "\t- Writing Field Day definition: " . $fd->name );
 
     # YAML::Tiny will convert a hash into the necessary structure to
     # write YAML, however we don't want to do that because Field Day
