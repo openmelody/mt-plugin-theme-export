@@ -669,7 +669,11 @@ sub _process_field_day_fields {
         print "Exporting Field Day fields from blog #$blog_id\n";
     }
     while ( my $fd = $iter->() ) {
-        $self->_write_field_day_yaml( $ts_id, $fd );
+        $self->_write_field_day_yaml({
+            ts_id    => $ts_id,
+            fd_field => $fd,
+            blog_id  => $blog_id,
+        });
     }
 
     # System-level field day objects leave the blog_id set as NULL, so they
@@ -682,32 +686,53 @@ sub _process_field_day_fields {
                                             { sort => 'name', }
         );
         while ( my $fd = $iter->() ) {
-            $self->_write_field_day_yaml( $ts_id, $fd );
+            $self->_write_field_day_yaml({
+                ts_id    => $ts_id,
+                fd_field => $fd,
+                blog_id  => $blog_id,
+            });
         }
     }
 } ## end sub _process_field_day_fields
 
 sub _write_field_day_yaml {
     my $self = shift;
-    my ( $ts_id, $fd ) = @_;
+    my ($arg_ref) = @_;
+    my $ts_id   = $arg_ref->{ts_id};
+    my $fd      = $arg_ref->{fd_field};
+    my $blog_id = $arg_ref->{blog_id};
 
     $self->_debug(
-                 "\t- Writing Custom Field definition: " . $fd->name . "\n" );
+                 "\t- Writing Field Day definition: " . $fd->name . "\n" );
 
     # YAML::Tiny will convert a hash into the necessary structure to
     # write YAML, however we don't want to do that because Field Day
     # uses non-standard names ("object_type" instead of "obj_type"),
     # so we should try to standardize that.
     $self->{'yaml'}->[0]->{'template_sets'}->{$ts_id}->{'fd_fields'}
-      ->{ $fd->name }->{'obj_type'} = $fd->object_type;
+      ->{ $fd->type }->{ $fd->name }->{'obj_type'} = $fd->object_type;
     $self->{'yaml'}->[0]->{'template_sets'}->{$ts_id}->{'fd_fields'}
-      ->{ $fd->name }->{'type'} = $fd->type;
-    $self->{'yaml'}->[0]->{'template_sets'}->{$ts_id}->{'fd_fields'}
-      ->{ $fd->name }->{'order'} = $fd->order;
+      ->{ $fd->type }->{ $fd->name }->{'order'} = $fd->order;
 
-    # The data field is a serialized blob.
+    # The data field is a serialized blob. Before dumping it to YAML we need
+    # to update the `group` key (if this is a field itself, and not a group).
+    # The field currently references the ID of the row of type group, and the
+    # ID is useless on another install. Reference the
+    # group name instead.
+    my $data = $fd->data;
+    if ( $fd->data->{group} && ($fd->data->{group} != 0) ) {
+
+        # Load the group row based on this field's group ID.
+        my $group = MT->model('fdsetting')->load( $fd->data->{group} );
+
+        # Reset this field's group (currently an ID) to the name of the group
+        # which we can easily use later to correctly build the fields.
+        $data->{group} = $group->name
+            if $group;
+    }
+
     $self->{'yaml'}->[0]->{'template_sets'}->{$ts_id}->{'fd_fields'}
-      ->{ $fd->name }->{'data'} = $fd->data;
+      ->{ $fd->type }->{ $fd->name }->{'data'} = $data;
 } ## end sub _write_field_day_yaml
 
 1;
