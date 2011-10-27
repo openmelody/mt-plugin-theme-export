@@ -1,16 +1,16 @@
 <mt:setvarblock name="page_title"><__trans phrase="Export Theme"></mt:setvarblock>
 <mt:setvarblock name="screen_id">theme-export</mt:setvarblock>
 <mt:setvarblock name="html_head" append="1">
-  <link rel="stylesheet" href="<$mt:PluginStaticWebPath component="themeexport"$>app.css" type="text/css" />
-  <script type="text/javascript" src="<mt:var name="static_uri">jquery/jquery.js"></script>
-  <script type="text/javascript" src="<$mt:PluginStaticWebPath component="themeexport"$>app.js"></script>
-  <script type="text/javascript" src="<mt:var name="static_uri">js/dialog.js"></script>
-  <script type="text/javascript" src="<$mt:PluginStaticWebPath component="themeexport"$>jquery.scrollTo-1.4.2-min.js"></script>
+    <link rel="stylesheet" href="<mt:PluginStaticWebPath component="themeexport">app.css" type="text/css" />
+    <script type="text/javascript" src="<mt:var name="static_uri">jquery/jquery.js"></script>
+    <script type="text/javascript" src="<mt:PluginStaticWebPath component="themeexport">app.js"></script>
+    <script type="text/javascript" src="<mt:var name="static_uri">js/dialog.js"></script>
+    <script type="text/javascript" src="<mt:PluginStaticWebPath component="themeexport">jQuery.evtpaginate.js"></script>
+    <script type="text/javascript" src="<mt:PluginStaticWebPath component="themeexport">jquery.scrollTo-1.4.2-min.js"></script>
 
   <script type="text/javascript">
-  $(document).ready( function() {
-    $('#continue').click( function() {
-        $('.page').hide();
+  jQuery(document).ready( function($) {
+    $('#export-button').click( function() {
         $('#steps').hide();
         $('#export-pane').show();
         var xhr = $.ajax({
@@ -32,6 +32,11 @@
                 var matches = text.split(/JSON:/);
                 if (matches && matches.length) {
 
+                    // This isn't an "interactive" export message, but at
+                    // least it shows what it's done.
+                    $('#export-log').html('<pre>'+matches[0]+'</pre>');
+                    $('#export-log').scrollTo( 'max' , { 'axis' : 'y' } );
+                    
                     // Successfully exported!
                     var json = matches[1];
                     if (json) {
@@ -56,15 +61,17 @@
 
                         // Remove the export button, and change "Cancel" 
                         // to "Close."
-                        $('button#continue').hide();
-                        $('button#close').text('Close');
+                        $('button').hide();
+                        $('button#close').text('Close').show();
                     }
                 }
 
             }
         });
 
+        // Doesn't seem to do anything...
         xhr.onreadystatechange = function() {
+            alert(xhr.readyState);
             if ( xhr.readyState == 3 ) {
                 interactive_export( xhr );
             }
@@ -77,52 +84,81 @@
 
 <mt:include name="dialog/header.tmpl">
 
-<div id="export_theme_content">
+<form id="export-form" method="post" action="<mt:var name="script_url">">
+    <input type="hidden" name="blog_id" value="<mt:var name="blog_id">" />
 
-    <div id="msg-container">
-        <mtapp:statusmsg
-            id="message"
-            class="info">
-                This tool will take you through the process of exporting a theme. Your theme metadata (entered in the General Information and Designer Details tabs), your blog's templates, and a <code>config.yaml</code> file will be exported and zipped for you to download. Your existing site will be unaffected by this export. Learn more about themes in the <a href="https://github.com/openmelody/melody/wiki/designguide-theme" target="_blank">Theme Designer Guide</a>.
-        </mtapp:statusmsg>
-    </div>
+    <ul id="steps">
 
-  <form id="export-form" method="post" 
-        action="<$mt:var name="script_url"$>">
+        <li id="step-1" class="step panel">
 
-    <input type="hidden" name="blog_id" value="<$mt:var name="blog_id"$>" />
+            <div id="msg-container">
+                <mtapp:statusmsg
+                    id="message"
+                    class="info">
+                        This tool will take you through the process of exporting a theme. Your theme metadata (entered in the General Information and Designer Details tabs), your blog's templates, and a <code>config.yaml</code> file will be exported and zipped for you to download. Your existing site will be unaffected by this export. Learn more about themes in the <a href="https://github.com/openmelody/melody/wiki/designguide-theme" target="_blank">Theme Designer Guide</a>.
+                </mtapp:statusmsg>
+            </div>
 
-    <ol id="steps" class="pkg">
-      <li class="page-1 general active" pageid="1"><label>General Information</label></li>
-      <li class="page-2" pageid="2"><label>Designer Details</label></li>
-    </ol>
+            <mtapp:setting
+                id="name"
+                label_class="top-label"
+                label="<__trans phrase="Theme Name">"
+                hint="The name of your theme."
+                show_hint="0">
+                <input class="full-width" 
+                    name="theme_name" 
+                    type="text" 
+                    value="<mt:Var name="theme_name">" />
+            </mtapp:setting>
 
-    <fieldset id="page-1" class="page first details">
+            <mtapp:setting
+                id="description"
+                label_class="top-label"
+                label="<__trans phrase="Description">">
+                <textarea class="full-width" 
+                    rows="3" 
+                    name="description"><mt:Var name="theme_description"></textarea>
+            </mtapp:setting>
 
-        <mtapp:setting
-            id="name"
-            label_class="top-label"
-            label="<__trans phrase="Theme Name">"
-            hint="The name of your theme."
-            show_hint="0">
-            <input class="full-width" name="theme_name" type="text" value="<$mt:var name="theme_name"$>" />
-        </mtapp:setting>
+            <mtapp:setting
+                id="version"
+                label_class="top-label"
+                label="<__trans phrase="Version">"
+                show_hint="0">
+                <input class="full-width" 
+                    name="theme_version" 
+                    type="text" value="<mt:Var name="theme_version">" />
+            </mtapp:setting>
 
-        <mtapp:setting
-            id="description"
-            label_class="top-label"
-            label="<__trans phrase="Description">">
-            <textarea class="full-width" rows="3" name="description"><$mt:var name="theme_description"$></textarea>
-        </mtapp:setting>
+        </li>
 
-        <mtapp:setting
-            id="version"
-            label_class="top-label"
-            label="<__trans phrase="Version">"
-            show_hint="0">
-            <input class="full-width" name="theme_version" type="text" value="<$mt:var name="theme_version"$>" />
-        </mtapp:setting>
+        <li id="step-2" class="step panel">
 
+            <mtapp:setting
+                id="designer"
+                label_class="top-label"
+                label="<__trans phrase="Designer/Author Name">"
+                show_hint="0">
+                <input class="full-width" 
+                    name="designer_name" 
+                    type="text" 
+                    value="<mt:Var name="designer_name">" />
+            </mtapp:setting>
+
+            <mtapp:setting
+                id="designer-url"
+                label_class="top-label"
+                label="<__trans phrase="Designer/Author URL">"
+                show_hint="0">
+                <input class="full-width" 
+                    name="designer_link" 
+                    type="text" 
+                    value="<mt:Var name="designer_url">" />
+            </mtapp:setting>
+
+        </li>
+
+<mt:SetVarBlock name="extra_fields">
     <mt:If name="system_cf">
         <mtapp:setting
             id="system_cf"
@@ -144,59 +180,57 @@
             <label for="system_fd">Export system-level Field Day fields. (Uncheck if they are not required for this theme or if they are part of another theme.)</label>
         </mtapp:setting>
     </mt:If>
+</mt:SetVarBlock>
 
-    </fieldset>
+    <mt:If name="extra_fields">
+        <li id="step-3" class="step panel">
+            <mt:Var name="extra_fields">
+        </li>
+    </mt:If>
 
-    <fieldset id="page-2" class="page last designer">
-
-      <mtapp:setting
-          id="designer"
-          label_class="top-label"
-          label="<__trans phrase="Designer/Author Name">"
-          show_hint="0">
-        <input class="full-width" name="designer_name" type="text" value="<$mt:var name="designer_name"$>" />
-      </mtapp:setting>
-
-      <mtapp:setting
-          id="designer-url"
-          label_class="top-label"
-          label="<__trans phrase="Designer/Author URL">"
-          show_hint="0">
-        <input class="full-width" name="designer_link" type="text" value="<$mt:var name="designer_url"$>" />
-      </mtapp:setting>
-
-    </fieldset>
+    </ul>
 
     <div id="export-pane">
-      <div id="export-log">
-        <ul>
-            <li>Exporting...</li>
-        </ul>
-      </div>
-      <div class="progress" style="display: none;"></div>
+        <div id="export-log">
+            <ul>
+                <li>Exporting...</li>
+            </ul>
+        </div>
+        <div class="progress" style="display: none;"></div>
     </div>
 
     <div class="actions-bar">
-      <div class="actions-bar-inner pkg actions">
-        <button
-             id="continue"
-             type="button"
-             on_click="javascript: void(0)"
-             accesskey="s"
-             title="<__trans phrase="Export (c)">"
-             class="primary-button disabled-button">
-          <__trans phrase="Export"></button>
-        <button
-             id="close"
-             onclick="closeDialog(); return false"
-             type="button"
-             accesskey="x"
-             class="cancel close"
-             title="<__trans phrase="Close (x)">">
-          <__trans phrase="Cancel"></button>
-      </div>
+        <div class="actions-bar-inner pkg actions">
+            <button
+                 id="export-button"
+                 type="button"
+                 on_click="javascript: void(0)"
+                 accesskey="s"
+                 title="<__trans phrase="Export (c)">"
+                 class="primary-button disabled-button"><__trans phrase="Export"></button>
+             <button
+                 id="next-step-button"
+                 type="submit"
+                 class="primary-button hidden"
+                 accesskey="n"
+                 title="Next Step">Next Step</button>
+            <button
+                id="previous-step-button"
+                type="submit"
+                class="hidden"
+                accesskey="p"
+                title="Previous Step">Previous Step</button>
+            <button
+                 id="close"
+                 onclick="closeDialog(); return false"
+                 type="button"
+                 accesskey="x"
+                 class="cancel close"
+                 title="<__trans phrase="Close (x)">">
+              <__trans phrase="Cancel"></button>
+        </div>
     </div>
-  </form>
-</div>
+
+</form>
 
 <mt:include name="dialog/footer.tmpl">

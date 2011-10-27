@@ -1,13 +1,3 @@
-var page = 1;
-var response_pos = 0;
-function setPage(p) {
-    page = p;
-    $('#steps li').removeClass('active');
-    $('.page').hide();
-    $('#page-' + p).show();
-    var step = $('#steps li.page-' + p);
-    step.addClass('active');
-}
 function interactive_export( c ) {
     var responseText;
     try {
@@ -33,11 +23,52 @@ function interactive_export( c ) {
         $('#export-log').scrollTo( 'max' , { 'axis' : 'y' } );
     }
 }
-$(document).ready( function() {
-    $('#steps li').click( function() {
-        var p = $(this).attr('pageid');
-        if (p != page) {
-            setPage(p);
+
+jQuery(document).ready( function($) {
+    // Paginate the steps with the jQuery.evtpaginate plugin.
+    var wrap = $('ul#steps');
+
+    $('#previous-step-button').click(function(){
+        // Data doesn't really need to be validated when moving back--only forward.
+        wrap.trigger('prev.evtpaginate');
+        return false;
+    });
+
+    $('#next-step-button').click(function(){
+        wrap.trigger('next.evtpaginate');
+        return false;
+    });
+
+    // Hide and show the appropriate buttons
+    wrap.bind( 'finished.evtpaginate', function(e, num, isFirst, isLast ){ 
+        if (isFirst && isLast) {
+            // A one-page wizard.
+            $('#previous-step-button').addClass('hidden');
+            $('#next-step-button').addClass('hidden');
+            $('#export-button').removeClass('hidden');
+        }
+        else if (isFirst) {
+            // This is the first page. Hide the "Previous" pagination button.
+            $('#previous-step-button').addClass('hidden');
+            $('#next-step-button').removeClass('hidden');
+            $('#export-button').addClass('hidden');
+        }
+        else if (isLast) {
+            // This is the last page. Hide the "Next" button and show the submit button.
+            $('#previous-step-button').removeClass('hidden');
+            $('#next-step-button').addClass('hidden');
+            $('#export-button').removeClass('hidden');
+        }
+        else {
+            // Somewhere in the middle--show both pagination buttons and hide the submit.
+            $('#previous-step-button').removeClass('hidden');
+            $('#next-step-button').removeClass('hidden');
+            $('#export-button').addClass('hidden');
         }
     });
+
+    // call the jQuery.evtpaginate plugin. This is responsible for only
+    // showing one step at a time.
+    wrap.evtpaginate({perPage:1});
+
 });
