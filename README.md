@@ -29,6 +29,12 @@ lib directory.
 * [Melody Compatibility Layer](https://github.com/endevver/mt-plugin-melody-compat) (not needed for Melody)
 * [Theme Manager](https://github.com/openmelody/mt-plugin-theme-manager) (not needed for Melody)
 
+This plugin requires a newer version of the `YAML::Tiny` Perl module than is
+included with Movable Type. Included with this plugin (in the `extlib/`
+folder) is a newer version of `YAML::Tiny`. Copy from the plugin archive
+`extlib/YAML/Tiny.pm` to `$MT_HOME/extlib/YAML/Tiny.pm` to update Movable
+Type's copy of this plugin. **This is a required, non-optional step!**
+
 ## Installation ##
 
 The installation is the same as the standard for most MT plugins. If you need help, please see [The Ultimate Guide to Installing Movable Type Plugins](http://tinyurl.com/easy-plugin-install)
