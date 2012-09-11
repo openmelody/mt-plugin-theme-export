@@ -130,13 +130,7 @@ This plugin is licensed under the same terms as Perl itself (Artistic License).
 
 ## Support ##
 
-Endevver does its best to support all of its open source software. For help
-please visit our dedicated support site at
-[http://endevver.tenderapp.com/](http://endevver.tenderapp.com/)
-
-You may also want to peruse our [issue
-tracker](https://endevver.lighthouseapp.com/projects/56202) where we track
-genuine bugs and feature requests for our development.
+You can file bug reports in Github's [Issues](https://github.com/openmelody/mt-plugin-theme-export/issues) tool.
 
 # About Endevver #
 
